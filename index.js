@@ -1,135 +1,156 @@
 const express = require("express");
-const { users } = require("./data/users.json")
-// const { books } = require("./data/books.json")
+const { users } = require("./data/users.json");
+// const { books } = require("./data/books.json");
 
 const app = express();
 
-const port = 5502;
+const PORT = 5502;
 
 app.use(express.json());
 
-app.get("/" ,(req,res)=>{
-res.status(200).json({
-    message: "server is up and running:-)",
-    data : "hello there"
- });
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Server is up and running :-)",
+    data: "hey",
+  });
 });
 
 /**
- * route : users
- * Method :GET
- * Description : Get all users
- * Access : Public
- * Parameters : none
+ * Route: /users
+ * Method: GET
+ * Description: Get all users
+ * Access: Public
+ * Parameters: None
  */
-//http://localhost:5502
-app.get("/users" ,(req,res) => {
-    res.status(200).json({
-        success:true,
-        data : users,
-     });
-    });
 
-//https://localhost:5502/user/:id
-/**
- * route : /users/:id
- * Method :GET
- * Description : Get single users by id
- * Access : Public
- * Parameters : id
- */
-app.get("/users/:id",(req,res)=>{
-    //const id = req.params.id;
-    const {id} = req.params.id;
-    const user = users.find((each)=>each.id === id);
-    if(!user){
-        return res.status(404).json({
-            success:false,
-            message:"User Doesn't Exists !!"
-        });
-    }
-    return req.status(200).json({
-        success:true,
-        message:"User Found",
-        data:user,
-    });
+app.get("/users", (req, res) => {
+  res.status(200).json({
+    success: true,
+    data: users,
+  });
 });
 
+/**
+ * Route: /users/:id
+ * Method: GET
+ * Description: Get single user by their id
+ * Access: Public
+ * Parameters: Id
+ */
+app.get("/users/:id", (req, res) => {
+  // const  id  = req.params.id;
+  const { id } = req.params;
+  console.log(req.params);
+  const user = users.find((each) => each.id === id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User Doesn't Exist !!",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    message: "User Found",
+    data: user,
+  });
+});
 
 /**
- * route : /users
- * Method :POST
- * Description : creating a new user
- * Access : Public
- * Parameters : none
+ * Route: /users
+ * Method: POST
+ * Description: Creating a new user
+ * Access: Public
+ * Parameters: None
  */
-app.post("/users",(req,res)=>{
-    const {id,name,surname,email,subscriptionType,subscriptionDate} = 
+app.post("/users", (req, res) => {
+  const { id, name, surname, email, subscriptionType, subscriptionDate } =
     req.body;
 
-    const user = user.find((each)=>each.id===id);
+  const user = users.find((each) => each.id === id);
 
-    if (users) {
-      return res.status(404).json({
-        success:false,
-        message:"User With The ID Exists "
-      });  
-    }
-
-    user.push({
-        id,
-        name,
-        surname,
-        email,
-        subscriptionType,
-        subscriptionDate,
+  if (user) {
+    return res.status(404).json({
+      success: false,
+      message: "User With The ID Exists",
     });
+  }
 
-    return res.status(201).json({
-        success:true,
-        message:"User added Successfully",
-        data:users,
-   });
+  users.push({
+    id,
+    name,
+    surname,
+    email,
+    subscriptionType,
+    subscriptionDate,
+  });
+
+  return res.status(201).json({
+    success: true,
+    message: "User Added Succesfully",
+    data: users,
+  });
 });
+
 /**
- * route : /users/:id
- * Method :PUT
- * Description :updating a user by their id
- * Access : Public
- * Parameters : ID
+ * Route: /users/:id
+ * Method: PUT
+ * Description: Updating a user by their id
+ * Access: Public
+ * Parameters: ID
  */
-app.put("/users/:id",(req,res) =>{
-    const { id } = req.params;
-    const { data } = req.body;
+app.put("/users/:id", (req, res) => {
+  const { id } = req.params;
+  const { data } = req.body;
 
-    const user = users.find((each)=> each.id === id);
-    if (!user) {
-        return res.status(404).json({
-            success:false,
-            message:"User Doesn't Exists !!!",
-        });
-    }
-    const UpdateUserData = Users.map((each)=>{
-        if(each,id===id){
-            return {
-                ...each,
-                ...data,
-            }
-        }
-        return each;
+  const user = users.find((each) => each.id === id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User Doesn't Exist !!",
     });
-    return res.status(200).json({
-        success:true,
-        message: "User Updated !!",
-        data:UpdateUserData,
-    })
-});
- app.get("*" ,(req,res)=>{
-    res.status(404).json({
-         message: "this rout does not exists"
-     });
+  }
+  const updateUserData = users.map((each) => {
+    if (each.id === id) {
+      return {
+        ...each,
+        ...data,
+      };
+    }
+    return each;
+  });
+  return res.status(200).json({
+    success: true,
+    message: "User Updated !!",
+    data: updateUserData,
+  });
 });
 
-app.listen(port,()=>{
-    console.log(`Server Started Running on Port: ${port}`)
+
+/**
+ * Route: /users/:id
+ * Method: DELETE
+ * Description: Deleting a user by their id
+ * Access: Public
+ * Parameters: ID
+ */
+app.delete("/users/:id",(req,res)=>{
+  const {id} = req.params;
+  const user = users.find((each) => each.id === id);
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User Doesn't Exist !!",
+    });
+  }
+// need to build logic for delete here...
+})
+
+app.get("*", (req, res) => {
+  res.status(404).json({
+    message: "This route doesn't exits",
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running at port ${PORT}`);
 });
