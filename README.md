@@ -86,3 +86,34 @@ GET:Get all books with their fine
 ## npm i nodemon --save-dev
 ## npm i express 
 ## npm run dev
+
+
+
+...each
+     ## "name": "Jane",
+     ## "surname": "Doe",
+      "email": "user@email.com",
+      "subscriptionType": "Premium",
+      "subscriptionDate": "01/01/2022"
+
+
+...data
+  "data": {
+    ## "name": "rudra",
+    ## "surname": "jena"
+  }
+
+name: rudra
+surname: jena
+email: user@email.com
+subscriptioType: "Premium"
+
+
+  const index = users.indexOf(user);
+  users.splice(index,1)
+
+
+  var class = ["six", "seven", "eight"];
+  indexOf()
+  class.indexOf("seven")
+  1
