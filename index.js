@@ -1,34 +1,40 @@
 const express = require("express");
-
-//const {user} = require("./data/users.json")
-//const {books} = require("./data/books.json")
+const { users} = require("./data/users.json");
 
 const app = express();
 
-const port = 5502;
+const PORT = 5502;
 
 app.use(express.json());
 
-app.get("/" ,(req,res)=>{
-res.status(200).json({
-    message: "server is up and running:-)",
-    data : "hello there"
-})
-})
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Server is up and running :-)",
+    data: "hey",
+  });
+});
 
 /**
- * route : users
- * Method :GET
- * Description : Get all users
- * Access : Public
- * Parameters : home
+ * Route: /users
+ * Method: GET
+ * Description: Get all users
+ * Access: Public
+ * Parameters: None
  */
-app.get("*" ,(req,res)=>{
-    res.status(200).json({
-        message: "this rout does not exists"
-    })
-})
 
-app.listen(port,()=>{
-    console.log(`Server Started Running on Port: ${port}`)
-})
+app.get("/users", (req, res) => {
+  res.status(200).json({
+    success: true,
+    data: users,
+  });
+});
+
+app.get("*", (req, res) => {
+  res.status(404).json({
+    message: "This route doesn't exits",
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running at port ${PORT}`);
+});
