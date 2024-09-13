@@ -10,7 +10,7 @@ const router = express.Router();
  * Parameters: None
  */
 
-//localhost:8081/users
+//localhost:5502/users
 router.get("/", (req, res) => {
   res.status(200).json({
     success: true,
